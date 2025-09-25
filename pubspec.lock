@@ -242,7 +242,7 @@ packages:
     source: hosted
     version: "0.4.1"
   dio:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dio
       sha256: d90ee57923d1828ac14e492ca49440f65477f4bb1263575900be731a3dac66a9
@@ -250,7 +250,7 @@ packages:
     source: hosted
     version: "5.9.0"
   dio_cache_interceptor:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dio_cache_interceptor
       sha256: c1cbf8be886b3e077165dda50a1b3bb299b8a72694af94d065b4d2ac0fee67d7
@@ -268,7 +268,7 @@ packages:
   domain:
     dependency: "direct main"
     description:
-      path: "lib/domain"
+      path: "module/domain"
       relative: true
     source: path
     version: "0.0.1"
@@ -429,7 +429,7 @@ packages:
   infrastructure:
     dependency: "direct main"
     description:
-      path: "lib/infrastructure"
+      path: "module/infrastructure"
       relative: true
     source: path
     version: "0.0.1"

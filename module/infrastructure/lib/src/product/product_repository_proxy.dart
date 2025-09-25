@@ -3,7 +3,7 @@ import 'package:infrastructure/src/product/product_cache.dart';
 import 'package:infrastructure/src/product/product_repository_api.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: ProductRepository)
+@Injectable(as: ProductRepository)
 class ProductRepositoryProxy implements ProductRepository {
   final ProductRepositoryApi _productRepositoryApi;
   final ProductCache _cache;

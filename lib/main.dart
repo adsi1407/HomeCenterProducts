@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:home_center_products/src/injection/injection.dart';
 
 void main() {
+  configureInjection();
   runApp(const MyApp());
 }
 
