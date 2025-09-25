@@ -9,6 +9,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:domain/domain.dart' as _i494;
 import 'package:domain/domain.module.dart' as _i941;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:home_center_products/src/presentation/bloc/search_bloc.dart'
@@ -23,7 +24,9 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.factory<_i344.SearchBloc>(() => _i344.SearchBloc());
+    gh.factory<_i344.SearchBloc>(
+      () => _i344.SearchBloc(gh<_i494.SearchProductsUseCase>()),
+    );
     await _i460.InfrastructurePackageModule().init(gh);
     await _i941.DomainPackageModule().init(gh);
     return this;
