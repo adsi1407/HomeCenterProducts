@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_center_products/src/injection/injection.dart';
+import 'package:home_center_products/dependency_injection/dependency_injection.dart';
 
 void main() {
   configureInjection();

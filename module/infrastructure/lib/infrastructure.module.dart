@@ -8,7 +8,7 @@ import 'dart:async' as _i687;
 
 import 'package:dio/dio.dart' as _i361;
 import 'package:domain/domain.dart' as _i494;
-import 'package:infrastructure/src/di/infrastructure_module.dart' as _i322;
+import 'package:infrastructure/dependency_injection/infrastructure_module.dart' as _i322;
 import 'package:infrastructure/src/product/product_api.dart' as _i672;
 import 'package:infrastructure/src/product/product_cache.dart' as _i714;
 import 'package:infrastructure/src/product/product_repository_api.dart'
