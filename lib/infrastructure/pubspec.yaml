@@ -1,6 +1,7 @@
 name: infrastructure
-description: "A new Flutter package project."
+description: "Infrastructure layer for Home Center Products"
 version: 0.0.1
+publish_to: 'none'
 homepage:
 
 environment:
@@ -10,6 +11,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  dio: ^5.0.0
+  dio_cache_interceptor: ^4.0.3
+  path_provider: ^2.0.0
+  drift: ^2.0.0
+  drift_sqflite: ^2.0.0
+
+  domain:
+    path: ../domain
 
 dev_dependencies:
   flutter_test:
