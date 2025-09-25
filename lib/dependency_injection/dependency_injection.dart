@@ -12,4 +12,4 @@ final getIt = GetIt.instance;
     ExternalModule(DomainPackageModule)
   ],
 )
-void configureInjection() => getIt.init();
+Future<void> configureInjection() async => await getIt.init();

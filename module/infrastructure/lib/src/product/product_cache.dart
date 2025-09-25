@@ -8,7 +8,7 @@ class ProductCache {
   final Duration defaultTtl;
   final _map = HashMap<String, CacheEntry<List<dynamic>>>();
 
-  ProductCache({this.defaultTtl = const Duration(minutes: 10)});
+  ProductCache() : defaultTtl = const Duration(minutes: 10);
 
   List<T>? get<T>(String key) {
     final entry = _map[key];

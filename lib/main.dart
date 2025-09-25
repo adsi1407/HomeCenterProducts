@@ -4,8 +4,8 @@ import 'package:home_center_products/dependency_injection/dependency_injection.d
 import 'package:home_center_products/src/presentation/bloc/search_products_bloc.dart';
 import 'package:home_center_products/src/presentation/page/search_products_page.dart';
 
-void main() {
-  configureInjection();
+Future<void> main() async {
+  await configureInjection();
   runApp(const MyApp());
 }
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Reto',
+      title: 'Home Center',
       home: BlocProvider(
         create: (_) => getIt<SearchProductsBloc>(),
         child: const SearchProductsPage(),
