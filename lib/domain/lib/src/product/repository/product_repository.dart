@@ -1,4 +1,4 @@
-import 'package:domain/src/entity/product.dart';
+import 'package:domain/src/product/entity/product.dart';
 
 abstract class ProductRepository {
   /// Busca productos. page empieza en 1.

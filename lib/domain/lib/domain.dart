@@ -1,4 +1,4 @@
 library;
 
-export 'src/entity/product.dart';
-export 'src/repository/product_repository.dart';
+export 'src/product/entity/product.dart';
+export 'src/product/repository/product_repository.dart';
