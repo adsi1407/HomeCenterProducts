@@ -10,10 +10,10 @@ import 'package:home_center_products/src/presentation/bloc/state/search_state.da
 import 'package:injectable/injectable.dart';
 
 @injectable
-class SearchBloc extends Bloc<SearchEvent, SearchState> {
+class SearchProductsBloc extends Bloc<SearchEvent, SearchState> {
   final SearchProductsUseCase _searchProductsUseCase;
 
-  SearchBloc(this._searchProductsUseCase) : super(SearchInitial()) {
+  SearchProductsBloc(this._searchProductsUseCase) : super(SearchInitial()) {
     on<SearchTextChanged>((event, emit) async {
       emit(SearchLoading());
       try {
