@@ -39,8 +39,6 @@ dependencies:
   cached_network_image: ^3.2.3
   get_it: ^7.2.0
   injectable: ^2.1.0
-  dio: ^5.0.0
-  dio_cache_interceptor: ^4.0.3
 
   domain:
     path: module/domain
