@@ -17,7 +17,8 @@ dependencies:
   dio_cache_interceptor: ^4.0.3
   path_provider: ^2.0.0
   drift: ^2.0.0
-  drift_sqflite: ^2.0.0
+  sqlite3_flutter_libs: ^0.5.39
+  path: ^1.8.0
 
   domain:
     path: ../domain
@@ -28,6 +29,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   build_runner: ^2.4.6
   injectable_generator: ^2.1.0
+  drift_dev: ^2.7.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
