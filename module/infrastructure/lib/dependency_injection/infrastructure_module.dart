@@ -26,4 +26,5 @@ abstract class InfrastructureModule {
     dio.interceptors.add(DioCacheInterceptor(options: cacheOptions));
     return dio;
   }
+
 }

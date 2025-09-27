@@ -19,6 +19,10 @@ class CartDao extends DatabaseAccessor<AppDatabase> with _$CartDaoMixin {
   Future<int> deleteByProductId(String productId) =>
       (delete(cartItem)..where((t) => t.productId.equals(productId))).go();
 
+  // Borrar por id (primary key)
+  Future<int> deleteById(int id) =>
+      (delete(cartItem)..where((t) => t.id.equals(id))).go();
+
   // Limpiar
   Future<int> clearCart() => delete(cartItem).go();
 
