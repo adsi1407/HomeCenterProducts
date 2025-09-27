@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_center_products/src/presentation/bloc/event/search_text_changed.dart';
-import 'package:home_center_products/src/presentation/bloc/search_products_bloc.dart';
-import 'package:home_center_products/src/presentation/bloc/state/search_error.dart';
-import 'package:home_center_products/src/presentation/bloc/state/search_initial.dart';
-import 'package:home_center_products/src/presentation/bloc/state/search_loaded.dart';
-import 'package:home_center_products/src/presentation/bloc/state/search_loading.dart';
-import 'package:home_center_products/src/presentation/bloc/state/search_state.dart';
+import 'package:home_center_products/src/presentation/product_search/bloc/event/search_text_changed.dart';
+import 'package:home_center_products/src/presentation/product_search/bloc/search_products_bloc.dart';
+import 'package:home_center_products/src/presentation/product_search/bloc/state/search_error.dart';
+import 'package:home_center_products/src/presentation/product_search/bloc/state/search_initial.dart';
+import 'package:home_center_products/src/presentation/product_search/bloc/state/search_loaded.dart';
+import 'package:home_center_products/src/presentation/product_search/bloc/state/search_loading.dart';
+import 'package:home_center_products/src/presentation/product_search/bloc/state/search_state.dart';
 
 class SearchProductsPage extends StatelessWidget {
   const SearchProductsPage({super.key});
