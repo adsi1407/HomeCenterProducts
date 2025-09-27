@@ -1,1 +1,0 @@
-export 'package:home_center_products/src/presentation/product_search/view/search_products_page.dart';
