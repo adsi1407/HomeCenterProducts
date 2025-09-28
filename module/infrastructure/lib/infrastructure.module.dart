@@ -22,6 +22,8 @@ import 'package:infrastructure/src/product/product_repository_api.dart'
 import 'package:infrastructure/src/product/product_repository_proxy.dart'
     as _i234;
 import 'package:infrastructure/src/product/product_translator.dart' as _i105;
+import 'package:infrastructure/src/suggestion/fixed_suggestion_repository_in_memory.dart'
+    as _i272;
 import 'package:injectable/injectable.dart' as _i526;
 
 class InfrastructurePackageModule extends _i526.MicroPackageModule {
@@ -49,6 +51,8 @@ class InfrastructurePackageModule extends _i526.MicroPackageModule {
               gh<_i1059.CartDao>(),
               gh<_i754.CartItemTranslator>(),
             ));
+    gh.lazySingleton<_i494.SuggestionRepository>(
+        () => _i272.FixedSuggestionRepositoryInMemory());
     gh.factory<_i408.ProductRepositoryApi>(() => _i408.ProductRepositoryApi(
           gh<_i672.ProductApi>(),
           gh<_i105.ProductTranslator>(),

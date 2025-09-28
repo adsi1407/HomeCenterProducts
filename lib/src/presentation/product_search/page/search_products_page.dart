@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/event/search_text_changed.dart';
@@ -11,9 +12,47 @@ import 'package:home_center_products/src/presentation/cart_item/bloc/event/cart_
 import 'package:home_center_products/src/presentation/cart_item/bloc/cart_bloc.dart';
 import 'package:home_center_products/src/presentation/cart_item/page/cart_page.dart';
 import 'package:domain/domain.dart';
+import 'package:home_center_products/dependency_injection/dependency_injection.dart';
 
-class SearchProductsPage extends StatelessWidget {
+class SearchProductsPage extends StatefulWidget {
   const SearchProductsPage({super.key});
+
+  @override
+  State<SearchProductsPage> createState() => _SearchProductsPageState();
+}
+
+class _SearchProductsPageState extends State<SearchProductsPage> {
+  final TextEditingController _controller = TextEditingController();
+  Timer? _debounce;
+  List<String> _fixedSuggestions = [];
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // try to load suggestions from DI use case; if not registered yet, ignore
+    try {
+      final usecase = getIt.get<GetSuggestionsUseCase>();
+      usecase.call().then((list) {
+        setState(() => _fixedSuggestions = list);
+      });
+    } catch (_) {
+      // DI may not be generated in some environments; fallback to empty list
+    }
+  }
+
+  void _onSearchChanged(String text) {
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      context.read<SearchProductsBloc>().add(SearchTextChanged(text));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,21 +73,66 @@ class SearchProductsPage extends StatelessWidget {
             ),
           ),
         ],
+        // Suggestions in the AppBar bottom as chips (fixed list filtered by input)
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(56),
+          child: ValueListenableBuilder<TextEditingValue>(
+            valueListenable: _controller,
+            builder: (context, value, _) {
+              final fixedSuggestions = _fixedSuggestions;
+
+              final text = value.text.trim();
+              if (text.isEmpty) return const SizedBox.shrink();
+
+              final matches = fixedSuggestions
+                  .where((s) => s.toLowerCase().contains(text.toLowerCase()))
+                  .toList();
+
+              if (matches.isEmpty) return const SizedBox.shrink();
+
+              return Container(
+                height: 56,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    final s = matches[index];
+                    return ActionChip(
+                      label: Text(s),
+                      onPressed: () {
+                        _controller.text = s;
+                        context.read<SearchProductsBloc>().add(SearchTextChanged(s));
+                      },
+                    );
+                  },
+                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  itemCount: matches.length,
+                ),
+              );
+            },
+          ),
+        ),
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(12.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Buscar productos...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    hintText: 'Buscar productos...',
+                    prefixIcon: const Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onChanged: _onSearchChanged,
                 ),
-              ),
-              onChanged: (text) =>
-                  context.read<SearchProductsBloc>().add(SearchTextChanged(text)),
+                // (AppBar now shows the fixed suggestions as chips)
+              ],
             ),
           ),
           Expanded(
