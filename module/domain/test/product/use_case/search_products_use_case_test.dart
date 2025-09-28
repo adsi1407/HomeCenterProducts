@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:domain/src/product/use_case/search_products_use_case.dart';
 import 'package:domain/src/product/entity/product.dart';
-import '../../fakes/fakes.dart';
+import '../../test_doubles/fakes/fakes.dart';
 
 // Removed the local fake repository implementation
 
