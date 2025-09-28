@@ -7,6 +7,10 @@ import 'package:home_center_products/src/presentation/product_search/bloc/state/
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_loaded.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_loading.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_state.dart';
+import 'package:home_center_products/src/presentation/cart_item/bloc/event/cart_add.dart';
+import 'package:home_center_products/src/presentation/cart_item/bloc/cart_bloc.dart';
+import 'package:home_center_products/src/presentation/cart_item/page/cart_page.dart';
+import 'package:domain/domain.dart';
 
 class SearchProductsPage extends StatelessWidget {
   const SearchProductsPage({super.key});
@@ -22,6 +26,14 @@ class SearchProductsPage extends StatelessWidget {
             const Text("Home Center"),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const CartPage()),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -62,16 +74,37 @@ class SearchProductsPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: ListTile(
-                          leading: Image.network(
-                            product.imageUrl ?? '',
-                            width: 60,
-                            fit: BoxFit.cover,
-                          ),
+                          leading: (product.imageUrl != null && product.imageUrl!.isNotEmpty)
+                              ? Image.network(
+                                  product.imageUrl!,
+                                  width: 60,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) => Container(
+                                    width: 60,
+                                    height: 60,
+                                    color: Colors.grey[200],
+                                    child: const Icon(Icons.broken_image, size: 28, color: Colors.grey),
+                                  ),
+                                )
+                              : Container(
+                                  width: 60,
+                                  height: 60,
+                                  color: Colors.grey[200],
+                                  child: const Icon(Icons.image_not_supported, size: 28, color: Colors.grey),
+                                ),
                           title: Text(product.name),
                           subtitle: Text("\$${product.price}"),
                           trailing: IconButton(
                             icon: const Icon(Icons.add_shopping_cart),
-                            onPressed: () {},
+                            onPressed: () {
+                              final cartItem = CartItem(
+                                product: product,
+                                quantity: 1,
+                                addedAt: DateTime.now(),
+                              );
+                              // dispatch add to CartBloc
+                              context.read<CartBloc>().add(CartAdd(cartItem));
+                            },
                           ),
                         ),
                       );

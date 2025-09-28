@@ -1,7 +1,9 @@
 import 'package:domain/src/cart_item/entity/cart_item.dart';
 import 'package:domain/src/cart_item/repository/cart_item_repository.dart';
+import 'package:injectable/injectable.dart';
 
 /// Caso de uso para operaciones de CartItem en el dominio.
+@injectable
 class CartItemUseCase {
   final CartItemRepository _repository;
 

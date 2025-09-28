@@ -10,6 +10,7 @@ import 'package:dio/dio.dart' as _i361;
 import 'package:domain/domain.dart' as _i494;
 import 'package:infrastructure/dependency_injection/infrastructure_module.dart'
     as _i1037;
+import 'package:infrastructure/src/cart/app_database.dart' as _i700;
 import 'package:infrastructure/src/cart/cart_dao.dart' as _i1059;
 import 'package:infrastructure/src/cart/cart_item_repository_drift.dart'
     as _i238;
@@ -32,10 +33,16 @@ class InfrastructurePackageModule extends _i526.MicroPackageModule {
       () => infrastructureModule.dio(),
       preResolve: true,
     );
+    await gh.factoryAsync<_i700.AppDatabase>(
+      () => infrastructureModule.appDatabase(),
+      preResolve: true,
+    );
     gh.lazySingleton<_i754.CartItemTranslator>(
         () => const _i754.CartItemTranslator());
     gh.lazySingleton<_i714.ProductCache>(() => _i714.ProductCache());
     gh.lazySingleton<_i105.ProductTranslator>(() => _i105.ProductTranslator());
+    gh.factory<_i1059.CartDao>(
+        () => infrastructureModule.cartDao(gh<_i700.AppDatabase>()));
     gh.lazySingleton<_i672.ProductApi>(() => _i672.ProductApi(gh<_i361.Dio>()));
     gh.lazySingleton<_i494.CartItemRepository>(
         () => _i238.CartItemRepositoryDrift(

@@ -6,6 +6,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i687;
 
+import 'package:domain/src/cart_item/repository/cart_item_repository.dart'
+    as _i228;
+import 'package:domain/src/cart_item/use_case/cart_item_use_case.dart' as _i733;
 import 'package:domain/src/product/repository/product_repository.dart' as _i184;
 import 'package:domain/src/product/use_case/search_products_use_case.dart'
     as _i931;
@@ -17,5 +20,7 @@ class DomainPackageModule extends _i526.MicroPackageModule {
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
     gh.factory<_i931.SearchProductsUseCase>(
         () => _i931.SearchProductsUseCase(gh<_i184.ProductRepository>()));
+    gh.factory<_i733.CartItemUseCase>(
+        () => _i733.CartItemUseCase(gh<_i228.CartItemRepository>()));
   }
 }
