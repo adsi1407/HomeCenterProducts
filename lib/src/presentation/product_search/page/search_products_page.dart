@@ -11,6 +11,7 @@ import 'package:home_center_products/src/presentation/product_search/bloc/state/
 import 'package:home_center_products/src/presentation/cart_item/bloc/event/cart_add.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/cart_bloc.dart';
 import 'package:home_center_products/src/presentation/cart_item/page/cart_page.dart';
+import 'package:home_center_products/src/presentation/product_search/widgets/product_list_item.dart';
 import 'package:domain/domain.dart';
 import 'package:home_center_products/dependency_injection/dependency_injection.dart';
 
@@ -53,6 +54,8 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
       context.read<SearchProductsBloc>().add(SearchTextChanged(text));
     });
   }
+
+  // Price formatting is handled by ProductListItem; keep page stateless regarding price format
 
   @override
   Widget build(BuildContext context) {
@@ -152,45 +155,16 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
                     itemCount: state.results.length,
                     itemBuilder: (context, index) {
                       final product = state.results[index];
-                      return Card(
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: ListTile(
-                          leading: (product.imageUrl != null && product.imageUrl!.isNotEmpty)
-                              ? Image.network(
-                                  product.imageUrl!,
-                                  width: 60,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) => Container(
-                                    width: 60,
-                                    height: 60,
-                                    color: Colors.grey[200],
-                                    child: const Icon(Icons.broken_image, size: 28, color: Colors.grey),
-                                  ),
-                                )
-                              : Container(
-                                  width: 60,
-                                  height: 60,
-                                  color: Colors.grey[200],
-                                  child: const Icon(Icons.image_not_supported, size: 28, color: Colors.grey),
-                                ),
-                          title: Text(product.name),
-                          subtitle: Text("\$${product.price}"),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.add_shopping_cart),
-                            onPressed: () {
-                              final cartItem = CartItem(
-                                product: product,
-                                quantity: 1,
-                                addedAt: DateTime.now(),
-                              );
-                              // dispatch add to CartBloc
-                              context.read<CartBloc>().add(CartAdd(cartItem));
-                            },
-                          ),
-                        ),
+                      return ProductListItem(
+                        product: product,
+                        onAdd: () {
+                          final cartItem = CartItem(
+                            product: product,
+                            quantity: 1,
+                            addedAt: DateTime.now(),
+                          );
+                          context.read<CartBloc>().add(CartAdd(cartItem));
+                        },
                       );
                     },
                   );

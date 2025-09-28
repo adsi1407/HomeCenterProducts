@@ -8,15 +8,27 @@ import 'package:home_center_products/src/presentation/cart_item/bloc/event/cart_
 import 'package:home_center_products/src/presentation/cart_item/bloc/event/cart_remove.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/event/cart_add.dart';
 import 'package:domain/domain.dart';
+import 'package:home_center_products/src/presentation/cart_item/widgets/cart_item_tile.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // trigger load when opening
-    context.read<CartBloc>().add(CartLoad());
+  State<CartPage> createState() => _CartPageState();
+}
 
+class _CartPageState extends State<CartPage> {
+  @override
+  void initState() {
+    super.initState();
+    // trigger load after first frame to avoid side effects during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CartBloc>().add(CartLoad());
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Carrito'),
@@ -30,85 +42,61 @@ class CartPage extends StatelessWidget {
             if (items.isEmpty) {
               return const Center(child: Text('El carrito está vacío'));
             }
-            return ListView.separated(
+                return ListView.separated(
               padding: const EdgeInsets.all(12),
               itemCount: items.length,
               separatorBuilder: (_, __) => const SizedBox(height: 8),
               itemBuilder: (context, index) {
                 final CartItem item = items[index];
-                return Card(
-                  child: ListTile(
-                    leading: (item.product.imageUrl != null && item.product.imageUrl!.isNotEmpty)
-                        ? Image.network(
-                            item.product.imageUrl!,
-                            width: 56,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => Container(
-                              width: 56,
-                              height: 56,
-                              color: Colors.grey[200],
-                              child: const Icon(Icons.broken_image, size: 24, color: Colors.grey),
-                            ),
-                          )
-                        : Container(
-                            width: 56,
-                            height: 56,
-                            color: Colors.grey[200],
-                            child: const Icon(Icons.image_not_supported, size: 24, color: Colors.grey),
+                return CartItemTile(
+                  item: item,
+                  onRemove: () async {
+                    // Confirm before deleting
+                    final confirmed = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Confirmar eliminación'),
+                        content: Text('¿Eliminar "${item.product.name}" del carrito?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: const Text('Cancelar'),
                           ),
-                    title: Text(item.product.name),
-                    subtitle: Text('Cantidad: ${item.quantity}'),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () async {
-                        // Confirm before deleting
-                        final confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Confirmar eliminación'),
-                            content: Text('¿Eliminar "${item.product.name}" del carrito?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(false),
-                                child: const Text('Cancelar'),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(true),
-                                child: const Text('Eliminar'),
-                              ),
-                            ],
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(true),
+                            child: const Text('Eliminar'),
                           ),
-                        );
+                        ],
+                      ),
+                    );
 
-                        if (confirmed != true) return;
+                    if (confirmed != true) return;
 
-                        if (item.id != null) {
-                          // Remove and show undo
-                          context.read<CartBloc>().add(CartRemove(item.id!));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('"${item.product.name}" eliminado'),
-                              action: SnackBarAction(
-                                label: 'Deshacer',
-                                onPressed: () {
-                                  // Re-insert the item (best-effort)
-                                  context.read<CartBloc>().add(CartAdd(item));
-                                },
-                              ),
-                            ),
-                          );
+                    if (item.id != null) {
+                      // Remove and show undo
+                      context.read<CartBloc>().add(CartRemove(item.id!));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('"${item.product.name}" eliminado'),
+                          action: SnackBarAction(
+                            label: 'Deshacer',
+                            onPressed: () {
+                              // Re-insert the item (best-effort)
+                              context.read<CartBloc>().add(CartAdd(item));
+                            },
+                          ),
+                        ),
+                      );
 
-                          // Force reload to refresh list (Bloc will also refresh on remove, but ensure it)
-                          context.read<CartBloc>().add(CartLoad());
-                        } else {
-                          // Item not persisted yet: inform the user
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('El item aún no está guardado en la base de datos')),
-                          );
-                        }
-                      },
-                    ),
-                  ),
+                      // Force reload to refresh list (Bloc will also refresh on remove, but ensure it)
+                      context.read<CartBloc>().add(CartLoad());
+                    } else {
+                      // Item not persisted yet: inform the user
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('El item aún no está guardado en la base de datos')),
+                      );
+                    }
+                  },
                 );
               },
             );
