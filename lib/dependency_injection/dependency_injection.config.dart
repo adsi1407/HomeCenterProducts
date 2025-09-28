@@ -12,8 +12,10 @@
 import 'package:domain/domain.dart' as _i494;
 import 'package:domain/domain.module.dart' as _i941;
 import 'package:get_it/get_it.dart' as _i174;
-import 'package:home_center_products/src/presentation/bloc/search_products_bloc.dart'
-    as _i117;
+import 'package:home_center_products/src/presentation/cart_item/bloc/cart_bloc.dart'
+    as _i673;
+import 'package:home_center_products/src/presentation/product_search/bloc/search_products_bloc.dart'
+    as _i270;
 import 'package:infrastructure/infrastructure.module.dart' as _i460;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -24,8 +26,11 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.factory<_i117.SearchProductsBloc>(
-      () => _i117.SearchProductsBloc(gh<_i494.SearchProductsUseCase>()),
+    gh.factory<_i673.CartBloc>(
+      () => _i673.CartBloc(gh<_i494.CartItemUseCase>()),
+    );
+    gh.factory<_i270.SearchProductsBloc>(
+      () => _i270.SearchProductsBloc(gh<_i494.SearchProductsUseCase>()),
     );
     await _i460.InfrastructurePackageModule().init(gh);
     await _i941.DomainPackageModule().init(gh);

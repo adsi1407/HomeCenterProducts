@@ -8,7 +8,9 @@ plugins {
 android {
     namespace = "com.example.home_center_products"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Use the highest NDK required by plugins (they're backward compatible).
+    // See plugin errors that request NDK 27.0.12077973.
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
