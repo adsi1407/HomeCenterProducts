@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:domain/src/cart_item/use_case/cart_item_use_case.dart';
 import 'package:domain/src/cart_item/entity/cart_item.dart';
 import 'package:domain/src/product/entity/product.dart';
-import '../../test_doubles/fakes/fakes.dart';
+import '../test_doubles/fakes/fake_cart_item_repository.dart';
 
 void main() {
   group('CartItemUseCase', () {

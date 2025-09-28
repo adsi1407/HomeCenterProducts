@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:domain/src/suggestion/use_case/get_suggestions_use_case.dart';
-import '../../test_doubles/fakes/fakes.dart';
+import '../test_doubles/fakes/fake_suggestion_repository.dart';
 
 void main() {
   group('GetSuggestionsUseCase', () {

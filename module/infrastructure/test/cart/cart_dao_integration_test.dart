@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infrastructure/src/cart/app_database.dart';
 import 'package:drift/drift.dart' as d;
 import 'package:infrastructure/src/cart/cart_dao.dart';
-import '../helpers/db_test_helper.dart';
+import 'test_doubles/fakes/fake_app_database_factory.dart';
 
 void main() {
   group('CartDao integration (in-memory)', () {
@@ -10,7 +10,7 @@ void main() {
     late CartDao dao;
 
     setUp(() {
-      db = createInMemoryDb();
+      db = FakeAppDatabaseFactory.createInMemory();
       dao = CartDao(db);
     });
 
