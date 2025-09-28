@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import '../repository/suggestion_repository.dart';
+import 'package:domain/src/suggestion/repository/suggestion_repository.dart';
 
 @injectable
 class GetSuggestionsUseCase {
