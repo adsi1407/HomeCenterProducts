@@ -71,6 +71,15 @@ jobs:
           # Generate updated golden snapshots on the runner so they can be
           # downloaded for inspection. We do not commit these changes.
           flutter test --update-goldens test/presentation/**/widgets/*golden*.dart || true
+      - name: Collect generated golden images
+        if: ${{ steps.run-golden-compare.outcome == 'failure' }}
+        run: |
+          # Ensure the destination exists
+          mkdir -p test/goldens
+          # Find PNGs produced by golden tests under test/ and copy them into test/goldens
+          # This handles cases where each test writes its own golden file next to the test
+          find . -type f -path "./test/*" \( -iname "*golden*.png" -o -iname "*.png" -o -path "*/goldens/*.png" \) -print0 \
+            | xargs -0 -I{} cp {} test/goldens/ || true
       - name: Upload goldens artifact
         if: ${{ steps.run-golden-compare.outcome == 'failure' }}
         uses: actions/upload-artifact@v4
