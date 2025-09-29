@@ -17,7 +17,7 @@ void main() {
 
       // Assert
       expect(find.text('Producto 1'), findsOneWidget);
-      expect(find.text('Cantidad: 2'), findsOneWidget);
+  expect(find.text('Quantity: 2'), findsOneWidget);
       expect(find.byIcon(Icons.delete), findsOneWidget);
 
       // Trigger remove

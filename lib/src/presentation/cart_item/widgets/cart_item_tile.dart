@@ -41,7 +41,7 @@ class CartItemTile extends StatelessWidget {
                 ),
               )
                 : Semantics(
-                label: item.product.name,
+                label: gen_l10n.AppLocalizations.of(context)!.noImageLabel(item.product.name),
                 child: Container(
                   width: AppStyles.cartImageSize,
                   height: AppStyles.cartImageSize,
@@ -50,7 +50,7 @@ class CartItemTile extends StatelessWidget {
                 ),
               ),
         title: Text(item.product.name, style: AppStyles.productTitle(context)),
-  subtitle: Text(gen_l10n.AppLocalizations.of(context)?.cartQuantity(item.quantity) ?? 'Cantidad: ${item.quantity}', style: AppStyles.productSubtitle(context)),
+  subtitle: Text(gen_l10n.AppLocalizations.of(context)!.cartQuantity(item.quantity), style: AppStyles.productSubtitle(context)),
         trailing: IconButton(
           icon: const Icon(Icons.delete),
           onPressed: onRemove,

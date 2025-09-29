@@ -85,7 +85,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
           children: [
             Image.asset('assets/logo_home_center.png', height: 32),
             const SizedBox(width: 8),
-            Text(gen_l10n.AppLocalizations.of(context)?.appTitle ?? 'Home Center'),
+            Text(gen_l10n.AppLocalizations.of(context)!.appTitle),
           ],
         ),
         actions: [
@@ -149,7 +149,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
                 TextField(
                   controller: _controller,
                   decoration: InputDecoration(
-                    hintText: gen_l10n.AppLocalizations.of(context)?.searchPlaceholder ?? 'Buscar productos...',
+                    hintText: gen_l10n.AppLocalizations.of(context)!.searchPlaceholder,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -165,13 +165,13 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
             child: BlocBuilder<SearchProductsBloc, SearchState>(
               builder: (context, state) {
                 if (state is SearchInitial) {
-                  return Center(
-                      child: Text(gen_l10n.AppLocalizations.of(context)?.searchHint ?? 'Ingrese un término para buscar productos'));
+          return Center(
+            child: Text(gen_l10n.AppLocalizations.of(context)!.searchHint));
                 } else if (state is SearchLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is SearchLoaded) {
-                  if (state.results.isEmpty) {
-                    return Center(child: Text(gen_l10n.AppLocalizations.of(context)?.searchNoResults ?? 'No se encontraron productos'));
+                    if (state.results.isEmpty) {
+                    return Center(child: Text(gen_l10n.AppLocalizations.of(context)!.searchNoResults));
                   }
                   return ListView.builder(
                     controller: _scrollController,
@@ -200,8 +200,8 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
                     },
                   );
                 } else if (state is SearchError) {
-                  final localized = gen_l10n.AppLocalizations.of(context)?.searchErrorFetching;
-                  return Center(child: Text(localized ?? state.message));
+                  final localized = gen_l10n.AppLocalizations.of(context)!.searchErrorFetching;
+                  return Center(child: Text(localized));
                 }
                 return const SizedBox.shrink();
               },

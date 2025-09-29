@@ -19,7 +19,7 @@ void main() {
     });
 
     testWidgets('shows items and handles delete confirmation', (tester) async {
-      final product = Product(id: 'p1', name: 'Mi Producto');
+  final product = Product(id: 'p1', name: 'My Product');
       final item = CartItem(id: 1, product: product, quantity: 1, addedAt: DateTime.now());
 
       whenListen(mockCartBloc, Stream.fromIterable([CartLoaded([item])]), initialState: CartLoaded([item]));
@@ -34,21 +34,21 @@ void main() {
       await tester.pumpAndSettle();
 
       // Item is visible
-      expect(find.text('Mi Producto'), findsOneWidget);
+  expect(find.text('My Product'), findsOneWidget);
 
       // Tap delete icon
       await tester.tap(find.byIcon(Icons.delete));
       await tester.pumpAndSettle();
 
       // Confirm dialog appears
-      expect(find.text('Confirmar eliminación'), findsOneWidget);
+  expect(find.text('Confirm deletion'), findsOneWidget);
 
       // Confirm deletion
-      await tester.tap(find.text('Eliminar'));
+  await tester.tap(find.text('Delete'));
       await tester.pumpAndSettle();
 
       // SnackBar shown with deleted text
-      expect(find.textContaining('eliminado'), findsOneWidget);
+  expect(find.textContaining('removed'), findsOneWidget);
     });
   });
 }

@@ -14,7 +14,7 @@ class ProductListItem extends StatelessWidget {
   const ProductListItem({super.key, required this.product, this.onAdd});
 
   String _formatPrice(BuildContext context, double? price) {
-    if (price == null) return gen_l10n.AppLocalizations.of(context)?.priceNA ?? 'N/A';
+  if (price == null) return gen_l10n.AppLocalizations.of(context)!.priceNA;
     return '\$${price.toStringAsFixed(2)}';
   }
 
@@ -47,7 +47,7 @@ class ProductListItem extends StatelessWidget {
                 ),
               )
                 : Semantics(
-                label: gen_l10n.AppLocalizations.of(context)?.noImageLabel(product.name) ?? 'No image available for ${product.name}',
+                label: gen_l10n.AppLocalizations.of(context)!.noImageLabel(product.name),
                 child: Container(
                   width: AppStyles.productImageSize,
                   height: AppStyles.productImageSize,

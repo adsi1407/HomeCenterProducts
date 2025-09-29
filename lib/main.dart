@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         // Title will be localized via AppLocalizations
-        onGenerateTitle: (context) => AppLocalizations.of(context)?.appTitle ?? 'Home Center',
+  onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: const SearchProductsPage(),
