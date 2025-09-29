@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:domain/domain.dart';
 import 'package:home_center_products/src/presentation/common/styles.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// ProductListItem
 /// - Inputs: [product], [onAdd]
@@ -26,10 +27,22 @@ class ProductListItem extends StatelessWidget {
         leading: (product.imageUrl != null && product.imageUrl!.isNotEmpty)
             ? Semantics(
                 label: product.name,
-                child: Image.network(
-                  product.imageUrl!,
+                child: CachedNetworkImage(
+                  imageUrl: product.imageUrl!,
                   width: AppStyles.productImageSize,
+                  height: AppStyles.productImageSize,
                   fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    width: AppStyles.productImageSize,
+                    height: AppStyles.productImageSize,
+                    color: Colors.grey[200],
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    width: AppStyles.productImageSize,
+                    height: AppStyles.productImageSize,
+                    color: Colors.grey[200],
+                    child: const Icon(Icons.broken_image, size: 28, color: Colors.grey),
+                  ),
                 ),
               )
             : Semantics(

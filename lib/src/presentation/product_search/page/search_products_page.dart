@@ -26,6 +26,7 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
   final TextEditingController _controller = TextEditingController();
   Timer? _debounce;
   List<String> _fixedSuggestions = [];
+  List<String> _fixedSuggestionsLower = [];
 
   @override
   void dispose() {
@@ -41,7 +42,10 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
     try {
       final usecase = getIt.get<GetSuggestionsUseCase>();
       usecase.call().then((list) {
-        setState(() => _fixedSuggestions = list);
+        setState(() {
+          _fixedSuggestions = list;
+          _fixedSuggestionsLower = list.map((s) => s.toLowerCase()).toList();
+        });
       });
     } catch (_) {
       // DI may not be generated in some environments; fallback to empty list
@@ -82,14 +86,17 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
           child: ValueListenableBuilder<TextEditingValue>(
             valueListenable: _controller,
             builder: (context, value, _) {
-              final fixedSuggestions = _fixedSuggestions;
-
               final text = value.text.trim();
               if (text.isEmpty) return const SizedBox.shrink();
-
-              final matches = fixedSuggestions
-                  .where((s) => s.toLowerCase().contains(text.toLowerCase()))
-                  .toList();
+              final lower = text.toLowerCase();
+              // Use precomputed lowercase list to avoid allocations in build
+              final matches = <String>[];
+              for (var i = 0; i < _fixedSuggestions.length; i++) {
+                if (_fixedSuggestionsLower.length > i && _fixedSuggestionsLower[i].contains(lower)) {
+                  matches.add(_fixedSuggestions[i]);
+                  if (matches.length >= 6) break; // limit chips to reduce rebuild cost
+                }
+              }
 
               if (matches.isEmpty) return const SizedBox.shrink();
 

@@ -91,8 +91,7 @@ class _CartPageState extends State<CartPage> {
                         ),
                       );
 
-                      // Force reload to refresh list (Bloc will also refresh on remove, but ensure it)
-                      context.read<CartBloc>().add(CartLoad());
+                      // Bloc should update state after removal; avoid forcing an extra load
                     } else {
                       // Item not persisted yet: inform the user
                       messenger.showSnackBar(

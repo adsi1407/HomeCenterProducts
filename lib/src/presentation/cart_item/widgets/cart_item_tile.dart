@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:domain/domain.dart';
 import 'package:home_center_products/src/presentation/common/styles.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// CartItemTile
 /// Renders a [CartItem] row with remove and undo callbacks.
@@ -20,10 +21,22 @@ class CartItemTile extends StatelessWidget {
         leading: (item.product.imageUrl != null && item.product.imageUrl!.isNotEmpty)
             ? Semantics(
                 label: item.product.name,
-                child: Image.network(
-                  item.product.imageUrl!,
+                child: CachedNetworkImage(
+                  imageUrl: item.product.imageUrl!,
                   width: AppStyles.cartImageSize,
+                  height: AppStyles.cartImageSize,
                   fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    width: AppStyles.cartImageSize,
+                    height: AppStyles.cartImageSize,
+                    color: Colors.grey[200],
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    width: AppStyles.cartImageSize,
+                    height: AppStyles.cartImageSize,
+                    color: Colors.grey[200],
+                    child: const Icon(Icons.broken_image, size: AppStyles.defaultIconSize, color: Colors.grey),
+                  ),
                 ),
               )
             : Semantics(
