@@ -9,8 +9,10 @@ import 'package:home_center_products/src/presentation/cart_item/bloc/state/cart_
 import 'package:domain/domain.dart';
 import 'package:mocktail/mocktail.dart';
 import 'test_doubles/mocks/mock_cart_item_use_case.dart';
+import 'test_doubles/fakes/fallback_cart_item.dart' as td;
 
 void main() {
+  setUpAll(() => td.registerPresentationCartItemDoubles());
   group('CartBloc', () {
     test('load | success | emits [Loading, Loaded] with items', () async {
       // Arrange
