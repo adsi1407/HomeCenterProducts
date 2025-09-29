@@ -31,4 +31,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cartErrorRemoving => 'Error removing item from cart';
+
+  @override
+  String get searchHint => 'Enter a term to search products';
+
+  @override
+  String get searchNoResults => 'No products found';
+
+  @override
+  String get cartTitle => 'Cart';
+
+  @override
+  String get cartDeleteConfirmTitle => 'Confirm deletion';
+
+  @override
+  String cartDeleteConfirmContent(String itemName) => 'Remove "$itemName" from cart?';
+
+  @override
+  String get commonCancel => 'Cancel';
+
+  @override
+  String get commonDelete => 'Delete';
+
+  @override
+  String cartDeletedSnackbar(String itemName) => '"$itemName" removed';
+
+  @override
+  String get cartNotSavedMessage => 'Item is not yet saved to the database';
+
+  @override
+  String cartQuantity(int qty) => 'Quantity: $qty';
+
+  @override
+  String noImageLabel(String itemName) => 'No image available for $itemName';
+
+  @override
+  String get priceNA => 'N/A';
 }

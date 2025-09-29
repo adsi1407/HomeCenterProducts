@@ -145,6 +145,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error removing item from cart'**
   String get cartErrorRemoving;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a term to search products'**
+  String get searchHint;
+
+  /// No description provided for @searchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No products found'**
+  String get searchNoResults;
+
+  /// Title for the cart page
+  String get cartTitle;
+
+  /// Confirm delete dialog title
+  String get cartDeleteConfirmTitle;
+
+  /// Confirm delete dialog content with item name
+  String cartDeleteConfirmContent(String itemName);
+
+  /// Common cancel button label
+  String get commonCancel;
+
+  /// Common delete/confirm label
+  String get commonDelete;
+
+  /// Snackbar shown when item deleted (parametrized)
+  String cartDeletedSnackbar(String itemName);
+
+  /// Message shown when item hasn't been persisted yet
+  String get cartNotSavedMessage;
+
+  /// Quantity label with parameter
+  String cartQuantity(int qty);
+
+  /// No image availability label
+  String noImageLabel(String itemName);
+
+  /// Placeholder when price is not available
+  String get priceNA;
 }
 
 class _AppLocalizationsDelegate

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:domain/domain.dart';
 import 'package:home_center_products/src/presentation/common/styles.dart';
+import 'package:home_center_products/l10n/app_localizations.dart' as gen_l10n;
 import 'package:cached_network_image/cached_network_image.dart';
 
 /// CartItemTile
@@ -39,8 +40,8 @@ class CartItemTile extends StatelessWidget {
                   ),
                 ),
               )
-            : Semantics(
-                label: 'No image available for ${item.product.name}',
+                : Semantics(
+                label: item.product.name,
                 child: Container(
                   width: AppStyles.cartImageSize,
                   height: AppStyles.cartImageSize,
@@ -49,7 +50,7 @@ class CartItemTile extends StatelessWidget {
                 ),
               ),
         title: Text(item.product.name, style: AppStyles.productTitle(context)),
-        subtitle: Text('Cantidad: ${item.quantity}', style: AppStyles.productSubtitle(context)),
+  subtitle: Text(gen_l10n.AppLocalizations.of(context)?.cartQuantity(item.quantity) ?? 'Cantidad: ${item.quantity}', style: AppStyles.productSubtitle(context)),
         trailing: IconButton(
           icon: const Icon(Icons.delete),
           onPressed: onRemove,

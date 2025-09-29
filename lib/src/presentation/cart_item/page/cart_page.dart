@@ -32,7 +32,7 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Carrito'),
+        title: Text(gen_l10n.AppLocalizations.of(context)?.cartTitle ?? 'Carrito'),
       ),
       body: BlocBuilder<CartBloc, dynamic>(
         builder: (context, state) {
@@ -41,7 +41,7 @@ class _CartPageState extends State<CartPage> {
           } else if (state is CartLoaded) {
             final items = state.items;
             if (items.isEmpty) {
-              return const Center(child: Text('El carrito está vacío'));
+              return Center(child: Text(gen_l10n.AppLocalizations.of(context)?.cartEmpty ?? 'El carrito está vacío'));
             }
                 return ListView.separated(
               padding: const EdgeInsets.all(12),
@@ -58,16 +58,16 @@ class _CartPageState extends State<CartPage> {
                     final confirmed = await showDialog<bool>(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text('Confirmar eliminación'),
-                        content: Text('¿Eliminar "${item.product.name}" del carrito?'),
+                        title: Text(gen_l10n.AppLocalizations.of(context)?.cartDeleteConfirmTitle ?? 'Confirmar eliminación'),
+                        content: Text(gen_l10n.AppLocalizations.of(context)?.cartDeleteConfirmContent(item.product.name) ?? '¿Eliminar "${item.product.name}" del carrito?'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(false),
-                            child: const Text('Cancelar'),
+                            child: Text(gen_l10n.AppLocalizations.of(context)?.commonCancel ?? 'Cancelar'),
                           ),
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(true),
-                            child: const Text('Eliminar'),
+                            child: Text(gen_l10n.AppLocalizations.of(context)?.commonDelete ?? 'Eliminar'),
                           ),
                         ],
                       ),
@@ -79,9 +79,9 @@ class _CartPageState extends State<CartPage> {
                     if (item.id != null) {
                       // Remove and show undo
                       context.read<CartBloc>().add(CartRemove(item.id!));
-                      messenger.showSnackBar(
+                        messenger.showSnackBar(
                         SnackBar(
-                          content: Text('"${item.product.name}" eliminado'),
+                          content: Text(gen_l10n.AppLocalizations.of(context)?.cartDeletedSnackbar(item.product.name) ?? '"${item.product.name}" eliminado'),
                           action: SnackBarAction(
                             label: 'Deshacer',
                             onPressed: () {
@@ -96,7 +96,7 @@ class _CartPageState extends State<CartPage> {
                     } else {
                       // Item not persisted yet: inform the user
                       messenger.showSnackBar(
-                        const SnackBar(content: Text('El item aún no está guardado en la base de datos')),
+                        SnackBar(content: Text(gen_l10n.AppLocalizations.of(context)?.cartNotSavedMessage ?? 'El item aún no está guardado en la base de datos')),
                       );
                     }
                   },

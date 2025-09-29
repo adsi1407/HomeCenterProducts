@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:domain/domain.dart';
 import 'package:home_center_products/src/presentation/common/styles.dart';
+import 'package:home_center_products/l10n/app_localizations.dart' as gen_l10n;
 import 'package:cached_network_image/cached_network_image.dart';
 
 /// ProductListItem
@@ -12,8 +13,8 @@ class ProductListItem extends StatelessWidget {
 
   const ProductListItem({super.key, required this.product, this.onAdd});
 
-  String _formatPrice(double? price) {
-    if (price == null) return 'N/A';
+  String _formatPrice(BuildContext context, double? price) {
+    if (price == null) return gen_l10n.AppLocalizations.of(context)?.priceNA ?? 'N/A';
     return '\$${price.toStringAsFixed(2)}';
   }
 
@@ -45,8 +46,8 @@ class ProductListItem extends StatelessWidget {
                   ),
                 ),
               )
-            : Semantics(
-                label: 'No image available for ${product.name}',
+                : Semantics(
+                label: gen_l10n.AppLocalizations.of(context)?.noImageLabel(product.name) ?? 'No image available for ${product.name}',
                 child: Container(
                   width: AppStyles.productImageSize,
                   height: AppStyles.productImageSize,
@@ -55,7 +56,7 @@ class ProductListItem extends StatelessWidget {
                 ),
               ),
         title: Text(product.name, style: AppStyles.productTitle(context)),
-        subtitle: Text(_formatPrice(product.price), style: AppStyles.productSubtitle(context)),
+  subtitle: Text(_formatPrice(context, product.price), style: AppStyles.productSubtitle(context)),
         trailing: IconButton(
           icon: const Icon(Icons.add_shopping_cart),
           onPressed: onAdd,

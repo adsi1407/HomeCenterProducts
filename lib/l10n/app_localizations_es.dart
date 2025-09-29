@@ -31,4 +31,40 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cartErrorRemoving => 'Error al eliminar el item del carrito';
+
+  @override
+  String get searchHint => 'Ingrese un término para buscar productos';
+
+  @override
+  String get searchNoResults => 'No se encontraron productos';
+
+  @override
+  String get cartTitle => 'Carrito';
+
+  @override
+  String get cartDeleteConfirmTitle => 'Confirmar eliminación';
+
+  @override
+  String cartDeleteConfirmContent(String itemName) => '¿Eliminar "$itemName" del carrito?';
+
+  @override
+  String get commonCancel => 'Cancelar';
+
+  @override
+  String get commonDelete => 'Eliminar';
+
+  @override
+  String cartDeletedSnackbar(String itemName) => '"$itemName" eliminado';
+
+  @override
+  String get cartNotSavedMessage => 'El item aún no está guardado en la base de datos';
+
+  @override
+  String cartQuantity(int qty) => 'Cantidad: $qty';
+
+  @override
+  String noImageLabel(String itemName) => 'Imagen no disponible para $itemName';
+
+  @override
+  String get priceNA => 'N/A';
 }
