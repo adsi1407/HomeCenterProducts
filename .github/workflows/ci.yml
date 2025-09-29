@@ -8,6 +8,11 @@ env:
   FLUTTER_CHANNEL: stable
   FAIL_ON_CODE_METRICS: '10'    # fail pipeline if code metrics issues > this
   # FAIL_ON_TESTS_BELOW removed: we won't verify coverage in CI to keep things simple
+  # Coverage thresholds (percent). Adjust per project needs.
+  COVERAGE_DOMAIN_MIN: '90'
+  COVERAGE_INFRA_MIN: '60'
+  COVERAGE_PRESENTATION_BLOC_MIN: '50'
+  COVERAGE_PRESENTATION_WIDGETS_MIN: '50'
 
 jobs:
   build-and-test:
@@ -33,27 +38,78 @@ jobs:
           flutter pub get
           flutter build apk --debug --no-shrink || true
 
-      - name: Run domain tests (module/domain)
+      - name: Run domain tests and coverage (module/domain)
         working-directory: module/domain
         run: |
           flutter pub get
-          flutter test --reporter=expanded
+          flutter test --coverage --reporter=expanded
+          # move lcov to workdir root for artifact
+          mv coverage/lcov.info ../coverage-domain.lcov || true
 
-      - name: Run infrastructure tests (module/infrastructure)
+      - name: Check domain coverage
+        run: |
+          dart --version
+          dart run tool/ci/check_coverage.dart coverage-domain.lcov ${{ env.COVERAGE_DOMAIN_MIN }}
+        working-directory: module/domain
+
+      - name: Upload domain coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-domain
+          path: module/domain/coverage-domain.lcov
+
+      - name: Run infrastructure tests and coverage (module/infrastructure)
         working-directory: module/infrastructure
         run: |
           flutter pub get
-          flutter test --reporter=expanded
+          flutter test --coverage --reporter=expanded
+          mv coverage/lcov.info ../coverage-infra.lcov || true
+
+      - name: Check infrastructure coverage
+        run: |
+          dart --version
+          dart run tool/ci/check_coverage.dart coverage-infra.lcov ${{ env.COVERAGE_INFRA_MIN }}
+        working-directory: module/infrastructure
+
+      - name: Upload infrastructure coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-infrastructure
+          path: module/infrastructure/coverage-infra.lcov
 
       - name: Run bloc tests (presentation blocs)
         run: |
           flutter pub get
-          flutter test test/presentation/**/bloc -r expanded || true
+          flutter test --coverage test/presentation/**/bloc -r expanded || true
+          mv coverage/lcov.info coverage-presentation-bloc.lcov || true
+
+      - name: Check presentation bloc coverage
+        run: |
+          dart --version
+          dart run tool/ci/check_coverage.dart coverage-presentation-bloc.lcov ${{ env.COVERAGE_PRESENTATION_BLOC_MIN }}
+
+      - name: Upload presentation bloc coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-presentation-bloc
+          path: coverage-presentation-bloc.lcov
 
       - name: Run widget tests
         run: |
           flutter pub get
-          flutter test test/presentation/**/widgets -r expanded || true
+          flutter test --coverage test/presentation/**/widgets -r expanded || true
+          mv coverage/lcov.info coverage-presentation-widgets.lcov || true
+
+      - name: Check presentation widget coverage
+        run: |
+          dart --version
+          dart run tool/ci/check_coverage.dart coverage-presentation-widgets.lcov ${{ env.COVERAGE_PRESENTATION_WIDGETS_MIN }}
+
+      - name: Upload presentation widget coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-presentation-widgets
+          path: coverage-presentation-widgets.lcov
 
       # Golden tests removed per request: they were causing CI failures while
       # local development uses `flutter test --update-goldens` to manage baselines.
