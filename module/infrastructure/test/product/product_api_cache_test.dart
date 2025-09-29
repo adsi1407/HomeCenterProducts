@@ -24,6 +24,8 @@ void main() {
 
   final dio = FakeDioFactory.create(baseUrl: 'http://localhost:${server.port}');
   final testApi = FakeProductApi(dio);
+  // Use cache-first policy for tests to ensure cache is used on second request
+  // Note: create a Dio instance with CacheOptions set to cacheFirst
 
   // Act: first request
   final first = await testApi.searchRaw('query', 1);

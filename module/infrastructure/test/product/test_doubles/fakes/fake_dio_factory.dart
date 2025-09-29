@@ -7,7 +7,7 @@ class FakeDioFactory {
 
     final options = cacheOptions ?? CacheOptions(
       store: store,
-      policy: CachePolicy.request,
+      policy: CachePolicy.request, // keep request as default but interceptor respects cache headers
       hitCacheOnNetworkFailure: true,
       maxStale: const Duration(minutes: 30),
     );
