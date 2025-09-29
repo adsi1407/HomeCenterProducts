@@ -1,8 +1,9 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:infrastructure/src/product/product_repository_proxy.dart';
-import 'package:infrastructure/src/product/product_cache.dart';
-import 'test_doubles/fakes/fake_product_repository_api.dart';
 import 'package:domain/domain.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:infrastructure/src/product/product_cache.dart';
+import 'package:infrastructure/src/product/product_repository_proxy.dart';
+
+import 'test_doubles/fakes/fake_product_repository_api.dart';
 
 void main() {
   group('ProductRepositoryProxy (cache-first)', () {
