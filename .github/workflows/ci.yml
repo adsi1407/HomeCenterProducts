@@ -47,16 +47,18 @@ jobs:
           mv coverage/lcov.info ../coverage-domain.lcov || true
 
       - name: Check domain coverage
+        # Run the coverage checker from the module level so paths to the tool and
+        # the generated lcov file resolve correctly.
+        working-directory: module
         run: |
           dart --version
-          dart run tool/ci/check_coverage.dart coverage-domain.lcov ${{ env.COVERAGE_DOMAIN_MIN }}
-        working-directory: module/domain
+          dart run ../tool/ci/check_coverage.dart coverage-domain.lcov ${{ env.COVERAGE_DOMAIN_MIN }}
 
       - name: Upload domain coverage
         uses: actions/upload-artifact@v4
         with:
           name: coverage-domain
-          path: module/domain/coverage-domain.lcov
+          path: module/coverage-domain.lcov
 
       - name: Run infrastructure tests and coverage (module/infrastructure)
         working-directory: module/infrastructure
@@ -66,16 +68,18 @@ jobs:
           mv coverage/lcov.info ../coverage-infra.lcov || true
 
       - name: Check infrastructure coverage
+        # Run the coverage checker from the module level so the tool path is
+        # resolved consistently and the generated lcov file is found.
+        working-directory: module
         run: |
           dart --version
-          dart run tool/ci/check_coverage.dart coverage-infra.lcov ${{ env.COVERAGE_INFRA_MIN }}
-        working-directory: module/infrastructure
+          dart run ../tool/ci/check_coverage.dart coverage-infra.lcov ${{ env.COVERAGE_INFRA_MIN }}
 
       - name: Upload infrastructure coverage
         uses: actions/upload-artifact@v4
         with:
           name: coverage-infrastructure
-          path: module/infrastructure/coverage-infra.lcov
+          path: module/coverage-infra.lcov
 
       - name: Run bloc tests (presentation blocs)
         run: |
