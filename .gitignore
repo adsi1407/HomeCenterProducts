@@ -43,3 +43,21 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Coverage outputs
+coverage/
+**/coverage/
+**/lcov.info
+*.lcov
+coverage*.lcov
+
+# Ignore per-package/tooling artifacts across repository (match modules and subpackages)
+**/.dart_tool/
+**/build/
+**/packages/
+**/pubspec.lock
+**/.packages
+**/.pub-cache/
+
+# Generated/localization outputs
+**/gen_l10n/
