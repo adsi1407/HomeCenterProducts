@@ -22,9 +22,8 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          # Use channel instead of flutter-version when you want the 'stable' channel
-          # or pin to a concrete version like '3.13.0' to avoid resolution/network issues.
-          channel: stable
+          # Pin to the exact Flutter version used locally to reduce golden diffs.
+          flutter-version: '3.32.8'
 
       - name: Flutter pub get (root)
         run: flutter pub get
