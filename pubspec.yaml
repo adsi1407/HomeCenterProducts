@@ -59,6 +59,9 @@ dev_dependencies:
   mocktail: ^1.0.0
   build_runner: ^2.4.6
   injectable_generator: ^2.1.0
+  # Melos v3 should be added as a dev dependency next to melos.yaml so you can
+  # run it with `dart run melos` (preferred for CI/local reproducibility).
+  melos: ^3.0.0
 
 
 # For information on the generic Dart part of this file, see the
