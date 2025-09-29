@@ -48,13 +48,13 @@ void main(List<String> args) async {
   }
 
   final percent = totalLines == 0 ? 0.0 : (coveredLines / totalLines) * 100.0;
-  stdout.writeln('Coverage summary for $path: ${coveredLines}/$totalLines => ${percent.toStringAsFixed(2)}%');
+  stdout.writeln('Coverage summary for $path: $coveredLines/$totalLines => ${percent.toStringAsFixed(2)}%');
 
   if (percent < minPercent) {
-    stderr.writeln('Coverage check failed: $percent% < required $minPercent%');
+  stderr.writeln('Coverage check failed: ${percent.toStringAsFixed(2)}% < required ${minPercent.toStringAsFixed(2)}%');
     exit(3);
   }
 
-  stdout.writeln('Coverage check passed: $percent% >= $minPercent%');
+  stdout.writeln('Coverage check passed: ${percent.toStringAsFixed(2)}% >= ${minPercent.toStringAsFixed(2)}%');
   exit(0);
 }

@@ -82,7 +82,9 @@ Future<int> main(List<String> args) async {
     stdout.writeln('Analyzer (text) found: errors=$txtErrors warnings=$txtWarnings info=0 total=${txtErrors + txtWarnings}');
     if (preview.isNotEmpty) {
       stdout.writeln('\nAnalyzer preview (textual matches):');
-      for (final p in preview) stdout.writeln(' - $p');
+      for (final p in preview) {
+        stdout.writeln(' - $p');
+      }
     }
     if (txtErrors > 0) {
       stderr.writeln('Failing CI because analyzer reported $txtErrors error(s).');
