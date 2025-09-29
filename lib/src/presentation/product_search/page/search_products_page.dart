@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/event/search_text_changed.dart';
+import 'package:home_center_products/src/presentation/product_search/bloc/event/search_load_more.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/search_products_bloc.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_error.dart';
 import 'package:home_center_products/l10n/app_localizations.dart' as gen_l10n;
@@ -25,6 +26,7 @@ class SearchProductsPage extends StatefulWidget {
 
 class _SearchProductsPageState extends State<SearchProductsPage> {
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   Timer? _debounce;
   List<String> _fixedSuggestions = [];
   List<String> _fixedSuggestionsLower = [];
@@ -33,12 +35,14 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
   void dispose() {
     _debounce?.cancel();
     _controller.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
     // try to load suggestions from DI use case; if not registered yet, ignore
     try {
       final usecase = getIt.get<GetSuggestionsUseCase>();
@@ -50,6 +54,17 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
       });
     } catch (_) {
       // DI may not be generated in some environments; fallback to empty list
+    }
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final threshold = 200; // pixels from bottom to trigger load more
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final current = _scrollController.position.pixels;
+    if (maxScroll - current <= threshold) {
+      // dispatch load more
+      context.read<SearchProductsBloc>().add(SearchLoadMore());
     }
   }
 
@@ -159,20 +174,28 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
                     return const Center(child: Text("No se encontraron productos"));
                   }
                   return ListView.builder(
+                    controller: _scrollController,
                     padding: const EdgeInsets.symmetric(horizontal: 12),
-                    itemCount: state.results.length,
+                    itemCount: state.results.length + (state.isLoadingMore ? 1 : 0),
                     itemBuilder: (context, index) {
-                      final product = state.results[index];
-                      return ProductListItem(
-                        product: product,
-                        onAdd: () {
-                          final cartItem = CartItem(
-                            product: product,
-                            quantity: 1,
-                            addedAt: DateTime.now(),
-                          );
-                          context.read<CartBloc>().add(CartAdd(cartItem));
-                        },
+                      if (index < state.results.length) {
+                        final product = state.results[index];
+                        return ProductListItem(
+                          product: product,
+                          onAdd: () {
+                            final cartItem = CartItem(
+                              product: product,
+                              quantity: 1,
+                              addedAt: DateTime.now(),
+                            );
+                            context.read<CartBloc>().add(CartAdd(cartItem));
+                          },
+                        );
+                      }
+                      // loading footer
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Center(child: CircularProgressIndicator()),
                       );
                     },
                   );
