@@ -16,43 +16,69 @@ Future<int> main(List<String> args) async {
   }
 
   final content = await file.readAsString();
-  // flutter analyze --format=json may output multiple JSON objects separated by newlines
-  // We'll parse leniently: find the first JSON array/object
-  dynamic parsed;
-  try {
-    parsed = jsonDecode(content);
-  } catch (_) {
-    // try to recover by reading last line that looks like JSON
-    final lines = content.trim().split(RegExp(r'\r?\n'));
-    for (var i = lines.length - 1; i >= 0; i--) {
-      final l = lines[i].trim();
-      if (l.isEmpty) continue;
-      try {
-        parsed = jsonDecode(l);
-        break;
-      } catch (_) {}
-    }
-  }
 
-  if (parsed == null) {
-    stderr.writeln('Could not parse analyze JSON file');
-    return 2;
-  }
-
-  // The analyzer JSON contains 'issues' array
+  // flutter analyze --format=json may output multiple JSON objects separated by newlines.
+  // We'll parse line-by-line and attempt to decode any JSON object/array found.
   final issues = <Map<String, dynamic>>[];
-  if (parsed is Map && parsed['issues'] is List) {
-    for (final it in parsed['issues']) {
-      if (it is Map<String, dynamic>) issues.add(it);
-    }
-  } else if (parsed is List) {
-    for (final item in parsed) {
-      if (item is Map && item['issues'] is List) {
-        for (final it in item['issues']) {
+  bool parsedAnything = false;
+
+  final lines = content.split(RegExp(r'\r?\n'));
+  for (final raw in lines) {
+    final l = raw.trim();
+    if (l.isEmpty) continue;
+    // Try parsing this line as JSON. If it fails, skip it.
+    try {
+      final parsed = jsonDecode(l);
+      parsedAnything = true;
+      if (parsed is Map && parsed['issues'] is List) {
+        for (final it in parsed['issues']) {
           if (it is Map<String, dynamic>) issues.add(it);
         }
+      } else if (parsed is List) {
+        for (final item in parsed) {
+          if (item is Map && item['issues'] is List) {
+            for (final it in item['issues']) {
+              if (it is Map<String, dynamic>) issues.add(it);
+            }
+          }
+        }
+      }
+    } catch (_) {
+      // ignore non-JSON lines
+      continue;
+    }
+  }
+
+  if (!parsedAnything) {
+    // Fallback: try to parse plain-text analyzer output (non-JSON) and look for
+    // lines that indicate errors/warnings. This makes the script robust across
+    // different Flutter versions where --format/json may not be available.
+    final textLines = content.split(RegExp(r'\r?\n'));
+    var txtErrors = 0;
+    var txtWarnings = 0;
+    for (final ln in textLines) {
+      final l = ln.trim();
+      // Common analyzer textual output includes patterns like:
+      // "error • <message> • <file>:<line>"
+      if (RegExp(r'^error\b', caseSensitive: false).hasMatch(l) || l.contains(' • error • ')) {
+        txtErrors++;
+      } else if (RegExp(r'^warning\b', caseSensitive: false).hasMatch(l) || l.contains(' • warning • ')) {
+        txtWarnings++;
       }
     }
+
+    if (txtErrors == 0 && txtWarnings == 0) {
+      stderr.writeln('Could not parse analyze JSON file: no JSON objects found and no textual analyzer markers in ${args[0]}');
+      return 2;
+    }
+
+    // Print summary based on textual parsing
+    stdout.writeln('Analyzer (text) found: errors=$txtErrors warnings=$txtWarnings info=0 total=${txtErrors + txtWarnings}');
+    if (txtErrors > 0) {
+      stderr.writeln('Failing CI because analyzer reported $txtErrors error(s).');
+      return 1;
+    }
+    return 0;
   }
 
   var errors = 0;
