@@ -22,7 +22,22 @@ void main(List<String> args) async {
   int totalLines = 0;
   int coveredLines = 0;
 
+  // Track current source file to allow excluding generated files
+  String? currentFile;
+  bool excludeCurrent = false;
+
   for (final line in lines) {
+    if (line.startsWith('SF:')) {
+      currentFile = line.substring(3).replaceAll('\\', '/');
+      // Exclude common generated file patterns: *.g.dart and directories named generated/
+      excludeCurrent = currentFile.endsWith('.g.dart') || currentFile.contains('/generated/') || currentFile.contains('/.dart_tool/');
+    }
+
+    if (excludeCurrent) {
+      // skip LF/LH entries for excluded files
+      continue;
+    }
+
     if (line.startsWith('LF:')) {
       final value = int.tryParse(line.substring(3)) ?? 0;
       totalLines += value;
