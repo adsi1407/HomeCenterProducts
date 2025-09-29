@@ -4,4 +4,9 @@
   "searchPlaceholder": "Search products",
   "addToCart": "Add",
   "cartEmpty": "Your cart is empty"
+  ,
+  "searchErrorFetching": "Error fetching products",
+  "cartErrorLoading": "Error loading cart",
+  "cartErrorAdding": "Error adding item to cart",
+  "cartErrorRemoving": "Error removing item from cart"
 }

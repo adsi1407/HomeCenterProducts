@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/event/search_text_changed.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/search_products_bloc.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_error.dart';
+import 'package:home_center_products/l10n/app_localizations.dart' as gen_l10n;
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_initial.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_loaded.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_loading.dart';
@@ -176,7 +177,8 @@ class _SearchProductsPageState extends State<SearchProductsPage> {
                     },
                   );
                 } else if (state is SearchError) {
-                  return Center(child: Text(state.message));
+                  final localized = gen_l10n.AppLocalizations.of(context)?.searchErrorFetching;
+                  return Center(child: Text(localized ?? state.message));
                 }
                 return const SizedBox.shrink();
               },

@@ -4,4 +4,9 @@
   "searchPlaceholder": "Buscar productos",
   "addToCart": "Agregar",
   "cartEmpty": "Tu carrito está vacío"
+  ,
+  "searchErrorFetching": "Error al buscar productos",
+  "cartErrorLoading": "Error al cargar el carrito",
+  "cartErrorAdding": "Error al agregar el item al carrito",
+  "cartErrorRemoving": "Error al eliminar el item del carrito"
 }

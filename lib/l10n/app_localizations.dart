@@ -121,6 +121,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your cart is empty'**
   String get cartEmpty;
+
+  /// No description provided for @searchErrorFetching.
+  ///
+  /// In en, this message translates to:
+  /// **'Error fetching products'**
+  String get searchErrorFetching;
+
+  /// No description provided for @cartErrorLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading cart'**
+  String get cartErrorLoading;
+
+  /// No description provided for @cartErrorAdding.
+  ///
+  /// In en, this message translates to:
+  /// **'Error adding item to cart'**
+  String get cartErrorAdding;
+
+  /// No description provided for @cartErrorRemoving.
+  ///
+  /// In en, this message translates to:
+  /// **'Error removing item from cart'**
+  String get cartErrorRemoving;
 }
 
 class _AppLocalizationsDelegate

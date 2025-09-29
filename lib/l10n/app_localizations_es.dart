@@ -19,4 +19,16 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cartEmpty => 'Tu carrito está vacío';
+
+  @override
+  String get searchErrorFetching => 'Error al buscar productos';
+
+  @override
+  String get cartErrorLoading => 'Error al cargar el carrito';
+
+  @override
+  String get cartErrorAdding => 'Error al agregar el item al carrito';
+
+  @override
+  String get cartErrorRemoving => 'Error al eliminar el item del carrito';
 }

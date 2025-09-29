@@ -4,6 +4,7 @@ import 'package:home_center_products/src/presentation/cart_item/bloc/cart_bloc.d
 import 'package:home_center_products/src/presentation/cart_item/bloc/state/cart_loading.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/state/cart_loaded.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/state/cart_error.dart';
+import 'package:home_center_products/l10n/app_localizations.dart' as gen_l10n;
 import 'package:home_center_products/src/presentation/cart_item/bloc/event/cart_load.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/event/cart_remove.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/event/cart_add.dart';
@@ -103,7 +104,8 @@ class _CartPageState extends State<CartPage> {
               },
             );
           } else if (state is CartError) {
-            return Center(child: Text(state.message));
+            final localized = gen_l10n.AppLocalizations.of(context)?.cartErrorLoading;
+            return Center(child: Text(localized ?? state.message));
           }
           return const SizedBox.shrink();
         },
