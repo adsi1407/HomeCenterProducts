@@ -3,7 +3,7 @@ import 'package:domain/src/product/use_case/search_products_use_case.dart';
 import 'package:domain/src/product/entity/product.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../test_doubles/mocks/mock_product_repository.dart';
+import 'test_doubles/mocks/mock_product_repository.dart';
 
 // Removed the local fake repository implementation
 

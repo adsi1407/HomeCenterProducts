@@ -2,8 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:domain/src/cart_item/use_case/cart_item_use_case.dart';
 import 'package:domain/src/cart_item/entity/cart_item.dart';
 import 'package:domain/src/product/entity/product.dart';
-import '../test_doubles/mocks/mock_cart_item_repository.dart';
+import 'test_doubles/mocks/mock_cart_item_repository.dart';
+import 'test_doubles/fakes/fallback_cart_item.dart' as td;
+
 void main() {
+  setUpAll(() => td.registerCartItemTestDoubles());
+
   group('CartItemUseCase', () {
     test('addItem | valid item | item added', () async {
       // Arrange
