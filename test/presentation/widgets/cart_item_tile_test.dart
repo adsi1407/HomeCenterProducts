@@ -14,8 +14,12 @@ void main() {
       supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(body: CartItemTile(item: cartItem)),
     ));
+    await tester.pumpAndSettle();
 
     expect(find.text('Cart Product'), findsOneWidget);
-    expect(find.textContaining('Cantidad'), findsOneWidget);
+    // Use localized label to avoid hardcoding a language in the test
+    final BuildContext ctx = tester.element(find.byType(Scaffold));
+    final quantityText = AppLocalizations.of(ctx)!.cartQuantity(cartItem.quantity);
+    expect(find.text(quantityText), findsOneWidget);
   });
 }
