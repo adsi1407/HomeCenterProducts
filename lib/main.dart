@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:home_center_products/l10n/app_localizations.dart';
 import 'package:home_center_products/dependency_injection/dependency_injection.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/search_products_bloc.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/cart_bloc.dart';
@@ -41,7 +42,10 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (_) => getIt<CartBloc>()),
       ],
       child: MaterialApp(
-        title: 'Home Center',
+        // Title will be localized via AppLocalizations
+        onGenerateTitle: (context) => AppLocalizations.of(context)?.appTitle ?? 'Home Center',
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: const SearchProductsPage(),
       ),
     );

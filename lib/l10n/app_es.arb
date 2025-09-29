@@ -1,0 +1,7 @@
+{
+  "@@locale": "es",
+  "appTitle": "Home Center",
+  "searchPlaceholder": "Buscar productos",
+  "addToCart": "Agregar",
+  "cartEmpty": "Tu carrito está vacío"
+}
