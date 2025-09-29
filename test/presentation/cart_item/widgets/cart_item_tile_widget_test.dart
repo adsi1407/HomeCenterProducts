@@ -22,7 +22,7 @@ void main() {
 
       // Assert
       expect(find.text('Producto 1'), findsOneWidget);
-  expect(find.text('Quantity: 2'), findsOneWidget);
+      expect(find.text('Quantity: 2'), findsOneWidget);
       expect(find.byIcon(Icons.delete), findsOneWidget);
 
       // Trigger remove
@@ -46,6 +46,39 @@ void main() {
 
       // Assert
       expect(find.byIcon(Icons.image_not_supported), findsOneWidget);
+    });
+
+    testWidgets('renders product name and quantity', (tester) async {
+      final product = Product(id: 'p_del', name: 'Deletable', price: 2.0);
+      final item = CartItem(product: product, quantity: 3, addedAt: DateTime.now());
+
+      await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(body: CartItemTile(item: item)),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Deletable'), findsOneWidget);
+      expect(find.textContaining('Quantity'), findsOneWidget);
+    });
+
+    testWidgets('delete button calls onRemove callback', (tester) async {
+      final product = Product(id: 'p_del', name: 'Deletable', price: 2.0);
+      final item = CartItem(product: product, quantity: 3, addedAt: DateTime.now());
+      var removed = false;
+
+      await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(body: CartItemTile(item: item, onRemove: () { removed = true; })),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.delete), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.delete));
+      await tester.pumpAndSettle();
+      expect(removed, isTrue);
     });
   });
 }

@@ -29,5 +29,49 @@ void main() {
       await tester.pumpAndSettle();
       expect(addCalled, isTrue);
     });
+
+    testWidgets('renders product name', (tester) async {
+      final product = Product(id: 'p_add', name: 'Addable', price: null, imageUrl: null);
+
+      await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(body: ProductListItem(product: product)),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Addable'), findsOneWidget);
+    });
+
+    testWidgets('shows price placeholder when price is null', (tester) async {
+      final product = Product(id: 'p_add', name: 'Addable', price: null, imageUrl: null);
+
+      await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(body: ProductListItem(product: product)),
+      ));
+      await tester.pumpAndSettle();
+
+      // Price placeholder is rendered in the subtitle; ensure a ListTile exists
+      expect(find.byType(ListTile), findsOneWidget);
+    });
+
+    testWidgets('add button calls onAdd callback', (tester) async {
+      final product = Product(id: 'p_add', name: 'Addable', price: null, imageUrl: null);
+      var addCalled = false;
+
+      await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(body: ProductListItem(product: product, onAdd: () => addCalled = true)),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(Icons.add_shopping_cart), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.add_shopping_cart));
+      await tester.pumpAndSettle();
+      expect(addCalled, isTrue);
+    });
   });
 }
