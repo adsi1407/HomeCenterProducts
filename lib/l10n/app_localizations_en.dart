@@ -21,18 +21,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cartEmpty => 'Your cart is empty';
 
   @override
-  String get searchErrorFetching => 'Error fetching products';
-
-  @override
-  String get cartErrorLoading => 'Error loading cart';
-
-  @override
-  String get cartErrorAdding => 'Error adding item to cart';
-
-  @override
-  String get cartErrorRemoving => 'Error removing item from cart';
-
-  @override
   String get searchHint => 'Enter a term to search products';
 
   @override
@@ -45,7 +33,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cartDeleteConfirmTitle => 'Confirm deletion';
 
   @override
-  String cartDeleteConfirmContent(String itemName) => 'Remove "$itemName" from cart?';
+  String cartDeleteConfirmContent(Object itemName) {
+    return 'Remove \"$itemName\" from cart?';
+  }
 
   @override
   String get commonCancel => 'Cancel';
@@ -54,17 +44,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonDelete => 'Delete';
 
   @override
-  String cartDeletedSnackbar(String itemName) => '"$itemName" removed';
+  String cartDeletedSnackbar(Object itemName) {
+    return '\"$itemName\" removed';
+  }
 
   @override
   String get cartNotSavedMessage => 'Item is not yet saved to the database';
 
   @override
-  String cartQuantity(int qty) => 'Quantity: $qty';
+  String cartQuantity(Object qty) {
+    return 'Quantity: $qty';
+  }
 
   @override
-  String noImageLabel(String itemName) => 'No image available for $itemName';
+  String noImageLabel(Object itemName) {
+    return 'No image available for $itemName';
+  }
 
   @override
   String get priceNA => 'N/A';
+
+  @override
+  String get searchErrorFetching => 'Error fetching products';
+
+  @override
+  String get cartErrorLoading => 'Error loading cart';
+
+  @override
+  String get cartErrorAdding => 'Error adding item to cart';
+
+  @override
+  String get cartErrorRemoving => 'Error removing item from cart';
 }

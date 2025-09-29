@@ -21,18 +21,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cartEmpty => 'Tu carrito está vacío';
 
   @override
-  String get searchErrorFetching => 'Error al buscar productos';
-
-  @override
-  String get cartErrorLoading => 'Error al cargar el carrito';
-
-  @override
-  String get cartErrorAdding => 'Error al agregar el item al carrito';
-
-  @override
-  String get cartErrorRemoving => 'Error al eliminar el item del carrito';
-
-  @override
   String get searchHint => 'Ingrese un término para buscar productos';
 
   @override
@@ -45,7 +33,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cartDeleteConfirmTitle => 'Confirmar eliminación';
 
   @override
-  String cartDeleteConfirmContent(String itemName) => '¿Eliminar "$itemName" del carrito?';
+  String cartDeleteConfirmContent(Object itemName) {
+    return '¿Eliminar \"$itemName\" del carrito?';
+  }
 
   @override
   String get commonCancel => 'Cancelar';
@@ -54,17 +44,36 @@ class AppLocalizationsEs extends AppLocalizations {
   String get commonDelete => 'Eliminar';
 
   @override
-  String cartDeletedSnackbar(String itemName) => '"$itemName" eliminado';
+  String cartDeletedSnackbar(Object itemName) {
+    return '\"$itemName\" eliminado';
+  }
 
   @override
-  String get cartNotSavedMessage => 'El item aún no está guardado en la base de datos';
+  String get cartNotSavedMessage =>
+      'El item aún no está guardado en la base de datos';
 
   @override
-  String cartQuantity(int qty) => 'Cantidad: $qty';
+  String cartQuantity(Object qty) {
+    return 'Cantidad: $qty';
+  }
 
   @override
-  String noImageLabel(String itemName) => 'Imagen no disponible para $itemName';
+  String noImageLabel(Object itemName) {
+    return 'Imagen no disponible para $itemName';
+  }
 
   @override
   String get priceNA => 'N/A';
+
+  @override
+  String get searchErrorFetching => 'Error al buscar productos';
+
+  @override
+  String get cartErrorLoading => 'Error al cargar el carrito';
+
+  @override
+  String get cartErrorAdding => 'Error al agregar el item al carrito';
+
+  @override
+  String get cartErrorRemoving => 'Error al eliminar el item del carrito';
 }

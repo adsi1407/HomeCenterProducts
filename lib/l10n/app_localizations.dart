@@ -122,6 +122,78 @@ abstract class AppLocalizations {
   /// **'Your cart is empty'**
   String get cartEmpty;
 
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a term to search products'**
+  String get searchHint;
+
+  /// No description provided for @searchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No products found'**
+  String get searchNoResults;
+
+  /// No description provided for @cartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart'**
+  String get cartTitle;
+
+  /// No description provided for @cartDeleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm deletion'**
+  String get cartDeleteConfirmTitle;
+
+  /// No description provided for @cartDeleteConfirmContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove \"{itemName}\" from cart?'**
+  String cartDeleteConfirmContent(Object itemName);
+
+  /// No description provided for @commonCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get commonCancel;
+
+  /// No description provided for @commonDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get commonDelete;
+
+  /// No description provided for @cartDeletedSnackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{itemName}\" removed'**
+  String cartDeletedSnackbar(Object itemName);
+
+  /// No description provided for @cartNotSavedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Item is not yet saved to the database'**
+  String get cartNotSavedMessage;
+
+  /// No description provided for @cartQuantity.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity: {qty}'**
+  String cartQuantity(Object qty);
+
+  /// No description provided for @noImageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No image available for {itemName}'**
+  String noImageLabel(Object itemName);
+
+  /// No description provided for @priceNA.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get priceNA;
+
   /// No description provided for @searchErrorFetching.
   ///
   /// In en, this message translates to:
@@ -145,48 +217,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error removing item from cart'**
   String get cartErrorRemoving;
-
-  /// No description provided for @searchHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Enter a term to search products'**
-  String get searchHint;
-
-  /// No description provided for @searchNoResults.
-  ///
-  /// In en, this message translates to:
-  /// **'No products found'**
-  String get searchNoResults;
-
-  /// Title for the cart page
-  String get cartTitle;
-
-  /// Confirm delete dialog title
-  String get cartDeleteConfirmTitle;
-
-  /// Confirm delete dialog content with item name
-  String cartDeleteConfirmContent(String itemName);
-
-  /// Common cancel button label
-  String get commonCancel;
-
-  /// Common delete/confirm label
-  String get commonDelete;
-
-  /// Snackbar shown when item deleted (parametrized)
-  String cartDeletedSnackbar(String itemName);
-
-  /// Message shown when item hasn't been persisted yet
-  String get cartNotSavedMessage;
-
-  /// Quantity label with parameter
-  String cartQuantity(int qty);
-
-  /// No image availability label
-  String noImageLabel(String itemName);
-
-  /// Placeholder when price is not available
-  String get priceNA;
 }
 
 class _AppLocalizationsDelegate
