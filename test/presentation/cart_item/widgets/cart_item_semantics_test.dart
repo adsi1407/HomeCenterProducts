@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_center_products/src/presentation/cart_item/widgets/cart_item_tile.dart';
+import 'package:home_center_products/l10n/app_localizations.dart';
 import 'package:domain/domain.dart';
 
 void main() {
@@ -8,7 +9,11 @@ void main() {
     final product = Product(id: 's1', name: 'Sin imagen', price: 1.0);
     final item = CartItem(product: product, quantity: 1, addedAt: DateTime.now());
 
-    await tester.pumpWidget(MaterialApp(home: Scaffold(body: CartItemTile(item: item))));
+    await tester.pumpWidget(MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: Scaffold(body: CartItemTile(item: item)),
+    ));
     await tester.pumpAndSettle();
 
   // The widget wraps the placeholder with a Semantics(label: 'No image available for <name>')

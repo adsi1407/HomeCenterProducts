@@ -10,6 +10,7 @@ import 'package:home_center_products/src/presentation/product_search/bloc/state/
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_initial.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_state.dart';
 import 'package:domain/domain.dart';
+import 'package:home_center_products/l10n/app_localizations.dart';
 
 class MockSearchProductsBloc extends Mock implements SearchProductsBloc {}
 
@@ -24,6 +25,8 @@ void main() {
 
     // Build widget
     await tester.pumpWidget(MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: BlocProvider<SearchProductsBloc>.value(
         value: bloc,
         child: const SearchProductsPage(),

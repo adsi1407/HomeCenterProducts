@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:home_center_products/src/presentation/product_search/widgets/product_list_item.dart';
+import 'package:home_center_products/l10n/app_localizations.dart';
 import 'package:domain/domain.dart';
 
 void main() {
@@ -12,6 +13,8 @@ void main() {
 
       // Act
       await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: ProductListItem(product: product, onAdd: () => addCalled = true),
         ),

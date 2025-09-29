@@ -4,6 +4,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:home_center_products/src/presentation/cart_item/page/cart_page.dart';
+import 'package:home_center_products/l10n/app_localizations.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/state/cart_loaded.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/cart_bloc.dart';
 import 'package:domain/domain.dart';
@@ -25,6 +26,8 @@ void main() {
       whenListen(mockCartBloc, Stream.fromIterable([CartLoaded([item])]), initialState: CartLoaded([item]));
 
       await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: BlocProvider<CartBloc>.value(
           value: mockCartBloc,
           child: const CartPage(),

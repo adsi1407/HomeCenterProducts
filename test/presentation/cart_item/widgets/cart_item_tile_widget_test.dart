@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:home_center_products/src/presentation/cart_item/widgets/cart_item_tile.dart';
+import 'package:home_center_products/l10n/app_localizations.dart';
 import 'package:domain/domain.dart';
 
 void main() {
@@ -13,7 +14,11 @@ void main() {
       var removed = false;
 
       // Act
-      await tester.pumpWidget(MaterialApp(home: Scaffold(body: CartItemTile(item: item, onRemove: () { removed = true; }))));
+      await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(body: CartItemTile(item: item, onRemove: () { removed = true; })),
+      ));
 
       // Assert
       expect(find.text('Producto 1'), findsOneWidget);
@@ -32,7 +37,11 @@ void main() {
       final item = CartItem(product: product, quantity: 1, addedAt: DateTime.now());
 
       // Act
-      await tester.pumpWidget(MaterialApp(home: Scaffold(body: CartItemTile(item: item))));
+      await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(body: CartItemTile(item: item)),
+      ));
       await tester.pumpAndSettle();
 
       // Assert

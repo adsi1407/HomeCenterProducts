@@ -9,6 +9,7 @@ import 'package:home_center_products/src/presentation/product_search/bloc/state/
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_state.dart';
 import 'package:domain/domain.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/cart_bloc.dart';
+import 'package:home_center_products/l10n/app_localizations.dart';
 
 import '../../common/test_doubles/mock_cart_bloc.dart';
 import 'test_doubles/mocks/mock_search_products_bloc.dart';
@@ -35,6 +36,8 @@ void main() {
 
       // Act
       await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: MultiBlocProvider(
           providers: [
             BlocProvider<SearchProductsBloc>.value(value: mockSearchBloc),
