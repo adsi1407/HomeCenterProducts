@@ -5,16 +5,18 @@ import 'package:home_center_products/src/presentation/product_search/bloc/state/
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_loaded.dart';
 import 'package:home_center_products/src/presentation/product_search/bloc/state/search_error.dart';
 import 'package:domain/domain.dart';
-import 'test_doubles/fakes/fake_search_products_use_case.dart';
+import 'package:mocktail/mocktail.dart';
+import 'test_doubles/mocks/mock_search_products_use_case.dart';
 
 void main() {
   group('SearchProductsBloc', () {
     test('onSearch | success | emits [Loading, Loaded] with results', () async {
       // Arrange
-  final fakeUseCase = FakeSearchProductsUseCase((q, p) => [
-    const Product(id: '1', name: 'taladro', price: 10.0),
+      final mockUseCase = makeSearchProductsMockWithResults([
+        const Product(id: '1', name: 'taladro', price: 10.0),
       ]);
-      final bloc = SearchProductsBloc(fakeUseCase);
+
+      final bloc = SearchProductsBloc(mockUseCase);
 
       // Act
       bloc.add(SearchTextChanged('taladro'));
@@ -31,8 +33,9 @@ void main() {
 
     test('onSearch | failure | emits [Loading, Error] when useCase throws', () async {
       // Arrange
-      final fakeUseCase = FakeSearchProductsUseCase((q, p) => throw Exception('fail'));
-      final bloc = SearchProductsBloc(fakeUseCase);
+      final mockUseCase = MockSearchProductsUseCase();
+      when(() => mockUseCase.call(any(), any())).thenThrow(Exception('fail'));
+      final bloc = SearchProductsBloc(mockUseCase);
 
       // Act
       bloc.add(SearchTextChanged('x'));

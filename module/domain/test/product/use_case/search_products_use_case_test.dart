@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:domain/src/product/use_case/search_products_use_case.dart';
 import 'package:domain/src/product/entity/product.dart';
-import '../test_doubles/fakes/fake_product_repository.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../test_doubles/mocks/mock_product_repository.dart';
 
 // Removed the local fake repository implementation
 
@@ -9,9 +11,9 @@ void main() {
   group('SearchProductsUseCase', () {
     test('call | valid query & page | returns products list', () async {
       // Arrange
-      final repo = FakeProductRepository(({required String query, int page = 1}) async {
-        return [const Product(id: '1', name: 'Drill', price: 10.0, imageUrl: null)];
-      });
+      final repo = makeProductRepoMockWithResults([
+        const Product(id: '1', name: 'Drill', price: 10.0, imageUrl: null)
+      ]);
       final useCase = SearchProductsUseCase(repo);
 
       // Act
@@ -25,9 +27,7 @@ void main() {
 
     test('call | repository throws | bubble exception', () async {
       // Arrange
-      final repo = FakeProductRepository(({required String query, int page = 1}) async {
-        throw Exception('network');
-      });
+      final repo = makeProductRepoMockThrow(Exception('network'));
       final useCase = SearchProductsUseCase(repo);
 
       // Act & Assert
@@ -36,9 +36,7 @@ void main() {
 
     test('call | empty result | returns empty list', () async {
       // Arrange
-      final repo = FakeProductRepository(({required String query, int page = 1}) async {
-        return <Product>[];
-      });
+      final repo = makeProductRepoMockWithResults(<Product>[]);
       final useCase = SearchProductsUseCase(repo);
 
       // Act
@@ -51,11 +49,16 @@ void main() {
     test('call | page boundary values delegated to repository', () async {
       // Ensure negative/zero page parameters are passed to repository and handled there
       var captured = <Map<String, dynamic>>[];
-      final repo = FakeProductRepository(({required String query, int page = 1}) async {
-        captured.add({'query': query, 'page': page});
+      // Use a mock to capture arguments passed to repository
+      final mock = MockProductRepository();
+      when(() => mock.searchProducts(query: any(named: 'query'), page: any(named: 'page')))
+          .thenAnswer((inv) async {
+        final q = inv.namedArguments[#query] as String;
+        final p = inv.namedArguments[#page] as int;
+        captured.add({'query': q, 'page': p});
         return <Product>[];
       });
-      final useCase = SearchProductsUseCase(repo);
+      final useCase = SearchProductsUseCase(mock);
 
       await useCase.call('q', 0);
       await useCase.call('q', -1);
@@ -66,9 +69,7 @@ void main() {
     });
 
     test('call | long query | returns empty list (no match)', () async {
-      final repo = FakeProductRepository(({required String query, int page = 1}) async {
-        return <Product>[];
-      });
+      final repo = makeProductRepoMockWithResults(<Product>[]);
       final useCase = SearchProductsUseCase(repo);
 
       final result = await useCase.call('this-is-a-very-long-query-that-should-not-match-anything', 1);
