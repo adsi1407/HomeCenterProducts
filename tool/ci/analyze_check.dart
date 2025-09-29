@@ -56,14 +56,20 @@ Future<int> main(List<String> args) async {
     final textLines = content.split(RegExp(r'\r?\n'));
     var txtErrors = 0;
     var txtWarnings = 0;
+    final preview = <String>[];
     for (final ln in textLines) {
       final l = ln.trim();
+      if (l.isEmpty) continue;
       // Common analyzer textual output includes patterns like:
       // "error • <message> • <file>:<line>"
-      if (RegExp(r'^error\b', caseSensitive: false).hasMatch(l) || l.contains(' • error • ')) {
+      final isError = RegExp(r'^error\b', caseSensitive: false).hasMatch(l) || l.contains(' • error • ');
+      final isWarning = RegExp(r'^warning\b', caseSensitive: false).hasMatch(l) || l.contains(' • warning • ');
+      if (isError) {
         txtErrors++;
-      } else if (RegExp(r'^warning\b', caseSensitive: false).hasMatch(l) || l.contains(' • warning • ')) {
+        if (preview.length < 20) preview.add('ERROR: $l');
+      } else if (isWarning) {
         txtWarnings++;
+        if (preview.length < 20) preview.add('WARNING: $l');
       }
     }
 
@@ -74,6 +80,10 @@ Future<int> main(List<String> args) async {
 
     // Print summary based on textual parsing
     stdout.writeln('Analyzer (text) found: errors=$txtErrors warnings=$txtWarnings info=0 total=${txtErrors + txtWarnings}');
+    if (preview.isNotEmpty) {
+      stdout.writeln('\nAnalyzer preview (textual matches):');
+      for (final p in preview) stdout.writeln(' - $p');
+    }
     if (txtErrors > 0) {
       stderr.writeln('Failing CI because analyzer reported $txtErrors error(s).');
       return 1;
