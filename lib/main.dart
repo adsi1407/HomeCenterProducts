@@ -4,7 +4,7 @@ import 'package:home_center_products/dependency_injection/dependency_injection.d
 import 'package:home_center_products/src/presentation/product_search/bloc/search_products_bloc.dart';
 import 'package:home_center_products/src/presentation/cart_item/bloc/cart_bloc.dart';
 import 'package:home_center_products/src/presentation/product_search/page/search_products_page.dart';
-import 'package:infrastructure/src/cart/app_database.dart';
+import 'package:infrastructure/infrastructure.dart' show AppDatabase;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +23,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     // Close the AppDatabase when the widget is disposed to free resources.
+    // Use tryGet to avoid throwing if it is not registered yet.
     try {
       final db = getIt.get<AppDatabase>();
       db.close();

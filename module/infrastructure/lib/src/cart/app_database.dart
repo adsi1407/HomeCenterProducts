@@ -2,8 +2,6 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:infrastructure/src/cart/cart_dao.dart';
 import 'package:infrastructure/src/cart/cart_item.dart';
-import 'package:path/path.dart' as p;
-
 part 'app_database.g.dart';
 
 @DriftDatabase(tables: [CartItem], daos: [CartDao])

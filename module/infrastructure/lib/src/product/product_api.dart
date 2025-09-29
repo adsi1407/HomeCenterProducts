@@ -6,7 +6,10 @@ class ProductApi {
   final Dio dio;
   ProductApi(this.dio);
 
-  /// Retorna la lista cruda de resultados (List<dynamic> de objetos JSON).
+  /// Retorna la lista cruda de resultados (List< dynamic > de objetos JSON).
+  ///
+  /// Nota: evita usar `<` o `>` sin escapar en doc comments ya que pueden ser
+  /// interpretados como HTML en la documentación.
   Future<List<Map<String, dynamic>>> searchRaw(String query, int page) async {
     final url = 'https://www.homecenter.com.co/s/search/v1/soco/';
     final response = await dio.get(url, queryParameters: {

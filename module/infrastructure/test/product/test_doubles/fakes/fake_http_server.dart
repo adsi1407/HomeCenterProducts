@@ -18,7 +18,7 @@ class FakeHttpServer {
 
   int get port => _server.port;
 
-  Uri uri(String path) => Uri.parse('http://localhost:${port}${path}');
+  Uri uri(String path) => Uri.parse('http://localhost:$port$path');
 
   void on(String path, int statusCode, Map<String, dynamic> jsonBody, {Map<String, String>? headers}) {
     _routes[path] = _RouteHandler(statusCode, jsonBody, headers ?? {});

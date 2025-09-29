@@ -7,7 +7,7 @@ class MockCartItemRepository extends Mock implements CartItemRepository {}
 MockCartItemRepository makeCartRepoWithItems(List<CartItem> items) {
   final mock = MockCartItemRepository();
   // Use a mutable store so tests can exercise add/remove and then fetchAll
-  final store = <CartItem>[]..addAll(items);
+  final store = <CartItem>[...items];
   when(() => mock.fetchAll()).thenAnswer((_) async => store);
   when(() => mock.add(any())).thenAnswer((inv) async {
     final it = inv.positionalArguments[0] as CartItem;

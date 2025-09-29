@@ -52,6 +52,8 @@ class _CartPageState extends State<CartPage> {
                   item: item,
                   onRemove: () async {
                     // Confirm before deleting
+                    final messenger = ScaffoldMessenger.of(context);
+
                     final confirmed = await showDialog<bool>(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -70,12 +72,13 @@ class _CartPageState extends State<CartPage> {
                       ),
                     );
 
+                    if (!mounted) return;
                     if (confirmed != true) return;
 
                     if (item.id != null) {
                       // Remove and show undo
                       context.read<CartBloc>().add(CartRemove(item.id!));
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      messenger.showSnackBar(
                         SnackBar(
                           content: Text('"${item.product.name}" eliminado'),
                           action: SnackBarAction(
@@ -92,7 +95,7 @@ class _CartPageState extends State<CartPage> {
                       context.read<CartBloc>().add(CartLoad());
                     } else {
                       // Item not persisted yet: inform the user
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      messenger.showSnackBar(
                         const SnackBar(content: Text('El item aún no está guardado en la base de datos')),
                       );
                     }
