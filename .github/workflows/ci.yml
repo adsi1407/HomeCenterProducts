@@ -57,19 +57,22 @@ jobs:
           flutter test test/presentation/**/widgets -r expanded || true
 
       - name: Run golden tests (compare baselines)
+        id: run-golden-compare
         run: |
           flutter pub get
-          # Run golden tests without updating baselines
-          flutter test test/presentation/**/widgets/*golden*.dart -r expanded || true
-        continue-on-error: true
+          # Run golden tests without updating baselines. If there are differences
+          # this step will fail which makes the CI detect regressions.
+          flutter test test/presentation/**/widgets/*golden*.dart -r expanded
 
       - name: Generate golden snapshots for review (artifact)
-        if: always()
+        if: ${{ steps.run-golden-compare.outcome == 'failure' }}
         run: |
           flutter pub get
+          # Generate updated golden snapshots on the runner so they can be
+          # downloaded for inspection. We do not commit these changes.
           flutter test --update-goldens test/presentation/**/widgets/*golden*.dart || true
       - name: Upload goldens artifact
-        if: always()
+        if: ${{ steps.run-golden-compare.outcome == 'failure' }}
         uses: actions/upload-artifact@v4
         with:
           name: golden-snapshots
@@ -81,7 +84,17 @@ jobs:
           flutter test test/presentation/**/widgets/*semantics*.dart -r expanded || true
 
       - name: Static analysis - flutter analyze
-        run: flutter analyze --no-fatal-infos
+        run: |
+          # Run analyzer and emit JSON to file. We allow non-zero exit so we can
+          # process the results and fail only on 'error' severity.
+          flutter analyze --format=json > analyze.json || true
+
+      - name: Fail CI only on analyzer errors (tool/ci/analyze_check.dart)
+        run: |
+          # Ensure we have Dart in PATH (installed with Flutter)
+          flutter --version
+          dart --version
+          dart run tool/ci/analyze_check.dart analyze.json
 
       - name: Static analysis - dart_code_metrics (optional)
         run: |
