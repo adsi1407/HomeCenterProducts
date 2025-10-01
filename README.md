@@ -1,33 +1,19 @@
-# home_center_products
+# Home Center Products
 
-A new Flutter project.
+This repository contains documentation in two languages. Please pick one:
 
-## Getting Started
+- English: see `README_EN.md`
+- Español: see `README_ES.md`
 
-This project is a starting point for a Flutter application.
+Quick local CI helpers
+----------------------
+See `CONTRIBUTING.md` for a set of PowerShell helper scripts to run module tests
+and generate coverage artifacts locally on Windows. The script is at
+`tool/scripts/run_tests_windows.ps1`.
 
-A few resources to get you started if this is your first Flutter project:
+Links
+-----
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-## CI coverage
-
-The CI workflow produces per-module coverage reports (domain, infrastructure,
-presentation blocs and presentation widgets). Each module runs tests with
-coverage enabled, the resulting `lcov.info` is checked against a minimum
-threshold and uploaded as an artifact. Thresholds are configured in
-`.github/workflows/ci.yml` and the coverage check script is `tool/ci/check_coverage.dart`.
-
-Adjust thresholds in the workflow if you need stricter/looser requirements.
-
-Defaults in the workflow (can be adjusted):
-- Domain coverage minimum: 90%
-- Infrastructure coverage minimum: 60%
-- Presentation (blocs/widgets) minimums: 50%
-
-Change those values by editing the environment variables at the top of `.github/workflows/ci.yml`.
+- English README: [README_EN.md](README_EN.md)
+- Spanish README: [README_ES.md](README_ES.md)
+- Contributing: [CONTRIBUTING.md](CONTRIBUTING.md)
